@@ -39,9 +39,8 @@ def run_ffmpeg(video_path, stream_key, is_shorts, log_callback):
 
 
 def main():
-    # Page configuration must be the first Streamlit command
+    # Page configuration
     st.set_page_config(page_title="Streaming YT by didinchy", page_icon="📈")
-
     st.title("Upload Video & Jalankan Live via Parameter")
 
     # Upload video section
@@ -53,6 +52,17 @@ def main():
             f.write(uploaded_file.getbuffer())
         st.success("✅ Video berhasil diupload.")
         video_path = uploaded_file.name
+
+    # List available video files
+    video_files = [f for f in os.listdir('.') if f.endswith(('.mp4', '.flv'))]
+    
+    if video_files:
+        st.write("🎬 Video yang tersedia:")
+        selected_video = st.selectbox("Pilih video dari direktori", video_files)
+        if selected_video:
+            video_path = selected_video
+    else:
+        st.info("📁 Belum ada video tersedia. Silakan upload terlebih dahulu.")
 
     # Log placeholder
     log_placeholder = st.empty()
